@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-57*z-t-pel1swj(by-(-gm%p&yl1e-h-)8ykm3&z&*@o_p(0@1'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -68,7 +68,7 @@ INSTALLED_APPS = [
 
 ANYMAIL = {
     # (exact settings here depend on your ESP...)
-    "SENDINBLUE_API_KEY": "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",
+    "SENDINBLUE_API_KEY": " ",
     "SENDINBLUE_SENDER_DOMAIN": '',  # your SENDINBLUE domain, if needed
 }
 EMAIL_BACKEND = "campaign.backends.sendinblue.EmailBackend"  # or sendgrid.EmailBackend, or...
