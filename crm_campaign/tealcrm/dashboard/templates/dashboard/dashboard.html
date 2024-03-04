@@ -1,0 +1,229 @@
+{% extends 'core/base.html' %} {% block title %}Dashboard {% endblock %} {% block content %}
+<h1 class="text-xl py-6 text-teal-800">Dashboard</h1>
+
+<div class="flex space-x-4">
+
+    //
+    <div class="w1/4 px-4 py-6 bg-gray-100 rounded-xl leads">
+        <h2 class="mb-4 text-lg">Lead convert to Client</h2>
+        <div class="flex space-x-100">
+            <div class="w-2/2 px-4 py-6 bg-gray-100 rounded-xl leads">
+                <h2 class="mb-4 text-lg bg-blue-100">Newest Convert</h2>
+
+                {% for lead in lead_convert %}
+                <div class="mb-2 lead">
+                    <a href="{% url 'leads:detail' lead.pk %}" class="font-semibold">{{ lead.name }}</a>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- <div class="w-1/2 px-4 py-6 bg-gray-50 rounded-xl clients">
+                <h2 class="mb-4 text-lg  bg-blue-100">Newest clients</h2>
+
+                {% for client in clients %}
+                <div class="mb-2 client">
+                    <a href="{% url 'clients:detail' client.pk %}" class="font-semibold">{{ client.name }}</a>
+                </div>
+                {% endfor %}
+            </div> -->
+    </div>
+    <canvas id="myChart1" width="400" height="400"></canvas> 
+
+    </div>
+//
+<div class="w1/4 px-4 py-6 bg-gray-100 rounded-xl leads">
+        <h2 class="mb-4 text-lg">Total Lead & Client</h2>
+            <div class="flex space-x-100">
+                <div class="w-1/2 px-4 py-6 bg-gray-100 rounded-xl leads">
+                    <h2 class="mb-4 text-lg bg-blue-100">Newest leads</h2>   
+                        {% for lead in leads %}
+                        <div class="mb-2 lead">
+                            <a href="{% url 'leads:detail' lead.pk %}" class="font-semibold">{{ lead.name }}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="w-1/2 px-4 py-6 bg-gray-50 rounded-xl clients">
+                        <h2 class="mb-4 text-lg bg-blue-100">Newest clients</h2>
+        
+                        {% for client in clients %}
+                        <div class="mb-2 client">
+                            <a href="{% url 'clients:detail' client.pk %}" class="font-semibold">{{ client.name }}</a>
+                        </div>
+                        {% endfor %}
+                    </div>      
+            </div>
+        <canvas id="myChart" width="400" height="400"></canvas> 
+        <!-- Đường dẫn CDN của Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- HTML để hiển thị biểu đồ -->
+
+        
+        <script type="text/javascript">
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var leadsCount = "{{ leads_count }}" || 0;
+            var clientsCount = "{{ clients_count }}" ||0;
+
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Leads', 'Clients'],
+                    datasets: [{
+                        label: 'Number of Leads and Clients',
+                        data: [leadsCount, clientsCount],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)', // Màu cho leads
+                            'rgba(54, 162, 235, 0.2)' // Màu cho clients
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)', // Màu viền cho leads
+                            'rgba(54, 162, 235, 1)' // Màu viền cho clients
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    // Cấu hình biểu đồ (nếu cần)
+                }
+            });
+        </script>
+
+
+
+
+</div>
+
+//
+<div class="w1/4 px-4 py-6 bg-gray-100 rounded-xl leads">
+        <h2 class="mb-4 text-lg">Lead Source</h2>
+            <!-- <div class="flex space-x-100">
+                <div class="w-1/2 px-4 py-6 bg-gray-100 rounded-xl leads">
+                    <h2 class="mb-4 text-lg bg-blue-100">Newest leads</h2>   
+                        {% for lead in leads %}
+                        <div class="mb-2 lead">
+                            <a href="{% url 'leads:detail' lead.pk %}" class="font-semibold">{{ lead.name }}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="w-1/2 px-4 py-6 bg-gray-50 rounded-xl clients">
+                        <h2 class="mb-4 text-lg bg-blue-100">Newest clients</h2>
+        
+                        {% for client in clients %}
+                        <div class="mb-2 client">
+                            <a href="{% url 'clients:detail' client.pk %}" class="font-semibold">{{ client.name }}</a>
+                        </div>
+                        {% endfor %}
+                    </div>      
+            </div> -->
+        <canvas id="myChart2" width="400" height="700"></canvas> 
+        <!-- Đường dẫn CDN của Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- HTML để hiển thị biểu đồ -->
+
+        <script type="text/javascript">
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var web = "{{ lead_sources_website }}" || 0;
+            var social = "{{ lead_sources_social }}" || 0;
+            var refer = "{{ lead_sources_referrals }}" || 0;
+            var ads = "{{ lead_sources_ads }}" || 0;
+        
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Website', 'Social', 'Referrals', 'Ads'],
+                    datasets: [{
+                        label: 'Number of Leads',
+                        data: [web, social, refer, ads], // Sửa dữ liệu ở đây để phù hợp với từng label
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)', // Màu cho leads
+                            'rgba(54, 162, 235, 0.2)', // Màu cho clients
+                            'rgba(255, 206, 86, 0.2)', // Màu cho referrals
+                            'rgba(75, 192, 192, 0.2)' // Màu cho ads
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)', // Màu viền cho leads
+                            'rgba(54, 162, 235, 1)', // Màu viền cho clients
+                            'rgba(255, 206, 86, 1)', // Màu viền cho referrals
+                            'rgba(75, 192, 192, 1)' // Màu viền cho ads
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    // Cấu hình biểu đồ (nếu cần)
+                }
+            });
+        </script>
+
+
+</div>
+
+//
+<div class="w1/4 px-4 py-6 bg-gray-100 rounded-xl leads">
+        <h2 class="mb-4 text-lg">Campaign</h2>
+        <canvas id="myChart4" width="400" height="700"></canvas> 
+        <!-- Đường dẫn CDN của Chart.js -->
+        <script type="text/javascript">
+            var ctx = document.getElementById('myChart4').getContext('2d');
+            var chartData = JSON.parse("{{ chart_data_json|escapejs }}");
+    
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Number of Campaigns',
+                        data: chartData.data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var ctx = document.getElementById('myChart1').getContext('2d');
+    var leadsConvert = "{{ leads_convert_count }}" || 0;
+    var leadTotal = "{{ leads_count}}" ||0;
+
+    var myChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: ['Leads convert', 'Leads Total'],
+            datasets: [{
+                label: 'Number of Leads convert & Leads',
+                data: [leadsConvert, leadTotal],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)', // Màu cho leads
+                    'rgba(54, 162, 235, 0.2)' // Màu cho clients
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)', // Màu viền cho leads
+                    'rgba(54, 162, 235, 1)' // Màu viền cho clients
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            // Cấu hình biểu đồ (nếu cần)
+        }
+    });
+</script>
+
+{% endblock%}

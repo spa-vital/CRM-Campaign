@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ client.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .two-column-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Chia layout thành 2 cột bằng nhau */
+        gap: 20px; /* Khoảng cách giữa các cột */
+
+        
+    }
+    .two-column-layout div p {
+    border-bottom: 1px solid #ccc; /* Dòng kẻ màu xám */
+    padding-bottom: 8px; /* Khoảng cách từ chân dòng đến dòng kẻ */
+    margin-bottom: 8px; /* Khoảng cách giữa các dòng */
+}
+</style>
+<div class="py-6 px-6">
+    <h1 class="text-xl">{{ client.name }}</h1>
+    <div class="two-column-layout">
+    <div>
+    {% if client.description %}
+        <p class="font-semibold">Description</p>
+        <p>{{ client.description }}</p>
+    {% endif %}
+            <h1 class="font-semibold">Create at</h1>
+            <p class="mb-2">{{client.created_at }}</p>
+            <h1 class="font-semibold">Modified at</h1>
+            <p class="mb-6">{{client.modified_at }}</p>
+        </div>
+
+        <div>
+            <h1 class="font-semibold">Email</h1>
+            <p class="mb-6">{{ client.email }}</p>
+            <h1 class="font-semibold">Phone</h1>
+            <p class="mb-6">{{ client.phone }}</p>
+            <h1 class="font-semibold">Service</h1>
+            <p class="mb-6">{{ client.product_line }}</p>
+            <h1 class="font-semibold">Company</h1>
+            <p class="mb-6">{{ client.company }}</p>
+            <h1 class="font-semibold">Job</h1>
+            <p class="mb-6">{{ client.job }}</p>
+        </div>
+           
+    </div>
+    
+    <hr class="my-4">
+    <a href="{% url 'clients:edit' client.id %}" class="py-2 px-6 rounded-xl bg-blue-500 text-white">Edit</a>
+    <a id="delete-client" href="{% url 'clients:delete' client.id %}" class="py-2 px-6 rounded-xl bg-red-500 text-white">Delete</a>
+
+    <!-- Script để hiển thị hộp thoại xác nhận -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('delete-client').addEventListener('click', function(event) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to delete this client?')) {
+                window.location.href = "{% url 'clients:delete' pk=client.pk %}";
+            }
+        });
+    });
+    </script>
+
+    <hr class="my-4">
+    <h2 class="text-xl mb-6">Comments</h2>
+    <div class="space-y-0.5">
+        {% for comment in client.comments.all %}
+        <div class="bg-gray-50 p-6 rounded-xl">
+            <p class="mb-2"><strong>{{ comment.created_by }} </strong> @ {{ comment.created_at }}</p>
+            {{ comment.content }}
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" action="{% url 'clients:add_comment' client.id %}">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <button class="mt-4 py-2 px-6 rounded-xl bg-blue-500 text-white">Submit</button>
+    </form>
+
+    <hr class="my-4">
+    <h2 class="text-xl mb-6">Files</h2>
+    <form method="post" action="{% url 'clients:add_file' client.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ fileform.as_p }}
+        <button class="mt-4 py-2 px-6 rounded-xl bg-blue-500 text-white">Submit</button>
+    </form>
+
+    <div class="space-y-0.5">
+        {% for file in client.files.all %}
+        <div class="bg-gray-50 p-6 rounded-xl">
+            <p class="mb-2"><strong>{{ file.created_by }} </strong> @ {{ file.created_at }}</p>
+            <a href="{{ file.file.url }}">Download</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr class="my-4">
+    <a href="{% url 'clients:list' %}"class=" py-2 px-6 rounded-xl bg-gray-500 text-white">Back to clients</a>
+</div>
+{% endblock %}

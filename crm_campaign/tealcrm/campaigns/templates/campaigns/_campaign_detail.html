@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<dl class="row mb-0">
+  <dt class="col-sm-3">{% trans 'Date and time' %}</dt>
+  <dd class="col-sm-9 d-flex align-items-center">
+    {{ campaign.send_date }} <small class="text-muted mx-3">({{ campaign.send_date }})</small>
+  </dd>
+
+  <dt class="col-sm-3">{% trans 'From' %}</dt>
+  <dd class="col-sm-9">{{ campaign.email.get_from }}</dd>
+
+  <dt class="col-sm-3">{% trans 'Subject' %}</dt>
+  <dd class="col-sm-9">{{ campaign.email.subject }}</dd>
+
+  {% if campaign.email.preview %}
+    <dt class="col-sm-3">{% trans 'Preview text' %}</dt>
+    <dd class="col-sm-9">{{ campaign.email.preview }}</dd>
+  {% endif %}
+
+</dl>

@@ -1,0 +1,53 @@
+version: "3.3"
+
+services:
+  redis:
+    container_name: tealcrm-redis
+    image: library/redis:5.0-alpine
+    restart: unless-stopped
+    networks:
+      - default
+    volumes:
+      - tealcrm-redis:/data
+
+  api:
+    container_name: tealcrm-api
+    ports:
+      - 8000:8000
+    build:
+      context: .
+    restart: unless-stopped
+    networks:
+      - default
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file: common.env
+
+  worker:
+    container_name: tealcrm-worker
+    build:
+      context: .
+      args:
+        STATIC_URL: "/static/"
+    command: celery -A tealcrm --app=tealcrm.celeryconf:app worker -B --autoscale=10,2 --loglevel=info
+    restart: unless-stopped
+    networks:
+      - default
+    env_file: common.env
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+      # shared volume between worker and api for media
+volumes:
+  tealcrm-redis:
+    driver: local
+  static_volume:
+  media_volume:
+
+networks:
+  default:
+    driver: bridge

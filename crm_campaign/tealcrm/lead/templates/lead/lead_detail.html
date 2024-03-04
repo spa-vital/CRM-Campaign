@@ -1,0 +1,104 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ lead.name }}{% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-xl">{{ lead.name }}</h1>
+    {% if lead.description %}
+        <p>{{ lead.description }}</p>
+    {% endif %}
+    <style>
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Chia layout thành 2 cột bằng nhau */
+            gap: 20px; /* Khoảng cách giữa các cột */
+
+            
+        }
+        .two-column-layout div p {
+        border-bottom: 1px solid #ccc; /* Dòng kẻ màu xám */
+        padding-bottom: 8px; /* Khoảng cách từ chân dòng đến dòng kẻ */
+        margin-bottom: 8px; /* Khoảng cách giữa các dòng */
+    }
+    </style>
+    
+    <div class="two-column-layout">
+        <div>
+            <h1 class="font-semibold">Priority</h1>
+            <p class="mb-2">{{ lead.get_priority_display }}</p>
+            <h1 class="font-semibold">Status</h1>
+            <p class="mb-2">{{ lead.get_status_display }}</p>
+            <h1 class="font-semibold">Create at</h1>
+            <p class="mb-2">{{ lead.created_at }}</p>
+            <h1 class="font-semibold">Modified at</h1>
+            <p class="mb-6">{{ lead.modified_at }}</p>
+            <h1 class="font-semibold">Lead Source</h1>
+            <p class="mb-6">{{ lead.lead_source }}</p>
+        </div>
+        <div>
+            <h1 class="font-semibold">Email</h1>
+            <p class="mb-6">{{ lead.email }}</p>
+            <h1 class="font-semibold">Phone</h1>
+            <p class="mb-6">{{ lead.phone }}</p>
+            <h1 class="font-semibold">Service</h1>
+            <p class="mb-6">{{ lead.product_line }}</p>
+            <h1 class="font-semibold">Company</h1>
+            <p class="mb-6">{{ lead.company }}</p>
+            <h1 class="font-semibold">Job</h1>
+            <p class="mb-6">{{ lead.job }}</p>
+        </div>
+    </div>
+  
+
+    <hr class="my-4">
+    <form id="lead_delete_form" method="post" action="{% url 'leads:delete' lead.id %}">
+        {% csrf_token %}
+    </form>
+
+    <a href="{% url 'leads:convert' lead.id %}" class="py-2 px-6 rounded-xl bg-blue-500 text-white">Convert to client</a>
+    <a href="{% url 'leads:edit' lead.id %}" class="py-2 px-6 rounded-xl bg-blue-500 text-white">Edit</a>
+    <a href="#" onclick="document.getElementById('lead_delete_form').submit();" class="py-2 px-6 rounded-xl bg-red-500 text-white">Delete</a>
+
+    <hr class="my-4">
+    <h2 class="text-xl mb-6">Comments</h2>
+
+    <div class="space-y-0.5">
+        {% for comment in lead.comments.all %}
+        <div class="bg-gray-50 p-6 rounded-xl">
+            <p class="mb-2"><strong>{{ comment.created_by }} </strong> @ {{ comment.created_at }}</p>
+            {{ comment.content }}
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" action="{% url 'leads:add_comment' lead.id %}">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <button class="mt-4 py-2 px-6 rounded-xl bg-blue-500 text-white">Submit</button>
+    </form>
+
+    <hr class="my-4">
+    <h2 class="text-xl mb-6">Files</h2>
+    <form method="post" action="{% url 'leads:add_file' lead.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ fileform.as_p }}
+        <button class="mt-4 py-2 px-6 rounded-xl bg-blue-500 text-white">Submit</button>
+    </form>
+
+    <div class="space-y-0.5">
+        {% for file in lead.files.all %}
+        <div class="bg-gray-50 p-6 rounded-xl">
+            <p class="mb-2"><strong>{{ file.created_by }} </strong> @ {{ file.created_at }}</p>
+            <a href="{{ file.file.url }}">Download</a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <hr class="my-4">
+    <a href="{% url 'leads:list' %}"class=" py-2 px-6 rounded-xl bg-gray-500 text-white">Back to leads</a>
+</div>
+{% endblock %}
+

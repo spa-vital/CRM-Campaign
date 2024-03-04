@@ -1,0 +1,108 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Leads {% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="mb-4 text-xl">Leads</h1>
+    <a href="{% url 'leads:add' %}" class="inline-block py-4 px-6 bg-blue-600 rounded-xl text-white">Add Lead</a>
+    
+    <div class="flex justify-between mb-4">
+        <!-- Thanh tìm kiếm -->
+        <form action="" method="get" class="flex items-center">
+            <input type="text" name="q" placeholder="Search..." class=" mt-6 py-2 px-4 border-2 border-gray-300 rounded-l-lg focus:outline-none">
+            <button type="submit" class="mt-6 py-2 px-6 bg-red-400 text-white rounded-r-lg border-2 ">Search</button>
+        </form>
+    </div>
+    
+    <!-- Phần hiển thị danh sách leads -->
+    {% if object_list %}
+        <!-- Các cột thông tin lead -->
+        <div class="mt-5 flex justify-between">
+            <!-- Các cột thông tin khác của lead -->
+        </div>
+    
+        <!-- Vòng lặp để hiển thị danh sách lead -->
+        {% for lead in object_list %}
+            <div class="flex justify-between">
+                <!-- Hiển thị thông tin từng lead -->
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    {% if object_list %}
+    <div class="mt-5 flex justify-between">
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Name</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Created at</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Status</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Email</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Phone</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Service</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Source</p>
+  
+    </div>
+    {% for lead in object_list %}
+        <div class="flex justify-between">
+            <p class="py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">
+             <a href="{% url 'leads:detail' lead.id %}" class="transition duration-500 hover:text-teal-500 transform hover:-translate-y-1 hover:scale-110 ...">{{ lead.name }}</a>   
+            </p>
+            <p class="py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">{{ lead.created_at }}</p>
+            <p class="lead-status {{ lead.status }} py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">{{ lead.get_status_display }}</p>
+            <p class="py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">{{ lead.email }}</p>
+            <p class="py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">{{ lead.phone }}</p>
+            <p class="py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">{{ lead.product_line }}</p>
+            <p class="py-2 px-2 w-full {% cycle 'bg-gray-50' '' %}">{{ lead.lead_source }}</p>
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="mt-6 px-2">There are no leads in the database yet...</p>
+{% endif %}
+<div class="pagination py-4 px-2 bg-gray-200 font-semibold w-full" style="display: flex; justify-content: center;margin-top: 20px;">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?page={{ object_list.previous_page_number }}" class="transition duration-500 hover:text-blue-500 transform hover:-translate-y-1 hover:scale-110 ...">Previous___</a>
+        {% endif %}
+    </span>
+ 
+    <span class="current">
+        Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+    </span>
+     
+    <span>
+        {% if object_list.has_next %}
+            <a href="?page={{ object_list.next_page_number }}" class="transition duration-500 hover:text-blue-500 transform hover:-translate-y-1 hover:scale-110 ...">___Next</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+
+<style>
+
+.lead-status {
+    padding: 5px; /* Điều chỉnh padding để tạo khoảng cách xung quanh chữ */
+    display: inline; /* Để phần tử p hiển thị như một phần của văn bản */
+    border-radius: 4px; /* Tạo viền cong cho background */
+}
+
+.unactioned {
+    color: #13120f; /* Màu cho trạng thái "New" */
+}
+
+.new {
+    color: #0758ed; /* Màu cho trạng thái "In Progress" */
+}
+
+.qualified {
+    color: #18db35; /* Màu cho trạng thái "Completed" */
+}
+.contacted {
+    color: #000000; /* Màu cho trạng thái "Completed" */
+}
+.unqualified {
+    color: #eb2b2b; /* Màu cho trạng thái "Completed" */
+}
+
+</style>
+{% endblock %}

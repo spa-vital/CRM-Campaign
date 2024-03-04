@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit client {% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-xl">Edit client</h1>
+
+    <form id="edit-client-form" method="post" action=".">
+            {% csrf_token %}
+    
+            {{ form.as_p }}
+    
+            <button id="client-submit-edit" class="py-4 px-8 bg-blue-500 text-white rounded-xl">Submit</button>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('client-submit-edit').addEventListener('click', function(event) {
+                        event.preventDefault();
+                        if (confirm('Are you sure you want to edit this client?')) {
+                            document.getElementById('edit-client-form').submit();
+                        }
+                    });
+                });
+            </script>
+        </form>
+    </form>
+</div>
+
+{% endblock %}

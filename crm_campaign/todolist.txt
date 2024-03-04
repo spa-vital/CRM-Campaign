@@ -1,0 +1,67 @@
+TODO LIST
+
+DONE - Create virtual environment, install django and create project
+DONE - Base pages / templates
+   DONE - Create app for pages 
+   DONE - Create base templates
+   DONE- Create front page
+   DONE- Create about page
+-DONE Autentication
+   DONE- Create database model for userprofiles
+   DONE- Make it possible to sign up
+   DONE- Make it possible to login
+   DONE- Make it possible to log out
+-DONE Simple dashboard
+-DONE Create new leads
+   DONE- New django app
+   DONE- Database models
+   DONE- Views/Forms for leads
+   DONE- List out leadsn
+   DONE- View detail page of lead
+   DONE- Change and delete leads
+   DONE- Convert leads to clients
+   DONE- Show a list of clients
+   DONE- Show a detail page of a client
+   DONE- Add clients
+   DONE- Change and delete clients
+
+DONE- Implement solution for team
+   DONE- Create teams app
+   DONE- Model for teams
+   DONE- When you create a lead, make sure team is set
+   DONE- When you create a client, make sure team is
+   DONE- If you're not a member of a team, create one
+   DONE- If you're the owner, make it possible to edit team
+
+
+Bug 1: - Dashboard hiển thị lead của user khác nhưng trong lead của mình thì không hiển thị
+Bug 2: - Khi nhấn vào detail của lead & client nếu không phải được tạo bởi user đang login thì báo lỗi 404
+Bug 3: - Clear form after submit
+To do: Nhớ thêm tệp .env vào .gitignore
+
+
+
+- DONE Refactoring 
+   - Install Tailwind instead of using the CDN
+   - Add name spaces to all of the apps
+   - Replace the leads list with a class based View
+   - Replace the leads detail with a class based View
+   - Replace the leads delete with a class based View
+   - Replace the leads edit with a class based View
+   - Replace the leads add with a class based View
+   - And give it a better name
+   - Replace the leads convert with a class based View
+   
+
+   - Upload files to leads and client
+   - Export information (lead, client)
+   - Replace the dispatch with loginrequiredmixin
+   - Show active team in menu
+   - Team detail page with member list
+   - Clean up base.html with include
+   - Fix styling for login and signup
+
+   
+
+- Implement a payment solution / Monthly recurring payments
+- Deloy
